@@ -1,7 +1,7 @@
 import javax.swing.*;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         String value = JOptionPane.showInputDialog(null,
                 "Please enter the number, you want to convert to other number bases. \n" +
                         "Negative numbers and decimals are not allowed!",
@@ -14,57 +14,26 @@ public class Main {
                 "Base",
                 JOptionPane.QUESTION_MESSAGE);
 
-        isValidInput(value, base);
-        convert(value, base);
+        isValidInput(value, base.toLowerCase());
+
+        try {
+            convert(value, base.toLowerCase());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,
+                    ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+
+                exception(base.toLowerCase(), value); // terminate the program with an error message
+        } finally {
+            System.out.println("Thanks for using.");
+        }
     }
 
     public static void isValidInput(String value, String base) {
         if (value == null || value.isEmpty() || value.isBlank()) exit();
-        else {
-            char[] digits = value.toLowerCase().toCharArray();
-            boolean notAllowed = false;
-
-            switch (base.toLowerCase()) {
-                case "binary":
-                    for (char e : digits) {
-                        if (!(e == '0' || e == '1')) {
-                            notAllowed = true;
-                            break;
-                        }
-                    }
-                    break;
-                case "octal":
-                    for (char e : digits) {
-                        if (!Character.isDigit(e)) {
-                            notAllowed = true;
-                            break;
-                        } else {
-                            if (Character.getNumericValue(e) > 7 || Character.getNumericValue(e) < 0) {
-                                notAllowed = true;
-                                break;
-                            }
-                        }
-                    }
-                    break;
-                case "decimal":
-                    for (char e : digits) {
-                        if (!Character.isDigit(e)) {
-                            notAllowed = true;
-                            break;
-                        }
-                    }
-                    break;
-                case "hexadecimal":
-                    for (char e : digits) {
-                        if (Character.getNumericValue(e) > 15 || Character.getNumericValue(e) < 0) {
-                            notAllowed = true;
-                            break;
-                        }
-                    }
-                    break;
-            }
-            if (notAllowed) exit();
-        }
+        else if (!base.equals("binary") && !base.equals("octal") && !base.equals("decimal") && !base.equals("hexadecimal"))
+            exit();
     }
 
     public static void convert(String num, String base) {
@@ -100,6 +69,10 @@ public class Main {
         }
     }
 
+    public static void exception(String base, String value) throws Exception {
+        throw new Exception(value + " cannot be written in " + base + " base.");
+    }
+
     public static void exit() {
         JOptionPane.showMessageDialog(null,
                 "Invalid Input! \n" +
@@ -107,6 +80,5 @@ public class Main {
                 "Error",
                 JOptionPane.ERROR_MESSAGE);
         System.exit(0);
-
     }
 }
