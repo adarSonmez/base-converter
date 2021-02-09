@@ -1,30 +1,35 @@
 import javax.swing.*;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
-        String value = JOptionPane.showInputDialog(null,
-                "Please enter the number, you want to convert to other number bases. \n" +
-                        "Negative numbers and decimals are not allowed!",
-                "Number",
-                JOptionPane.QUESTION_MESSAGE);
-
-        String base = JOptionPane.showInputDialog(null,
-                "What's the base of the number you entered? \n" +
-                        "Binary, octal, decimal or hexadecimal?",
-                "Base",
-                JOptionPane.QUESTION_MESSAGE);
-
-        isValidInput(value, base.toLowerCase());
+    public static void main(String[] args) throws NumberFormatException {
+        String value = "";
+        String base = "";
 
         try {
+            value = JOptionPane.showInputDialog(null,
+                    "Please enter the number, you want to convert to other number bases. \n" +
+                            "Negative numbers and decimals are not allowed!",
+                    "Number",
+                    JOptionPane.QUESTION_MESSAGE);
+
+            base = JOptionPane.showInputDialog(null,
+                    "What's the base of the number you entered? \n" +
+                            "Binary, octal, decimal or hexadecimal?",
+                    "Base",
+                    JOptionPane.QUESTION_MESSAGE);
+
+            isValidInput(value, base.toLowerCase());
+
             convert(value, base.toLowerCase());
-        } catch (Exception ex) {
+        } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null,
                     ex.getMessage(),
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
 
-                exception(base.toLowerCase(), value); // terminate the program with an error message
+            exception(base.toLowerCase(), value); // terminate the program with an error message
+        } catch (NullPointerException ex) {
+            System.out.println("You didn't enter a valid input");
         } finally {
             System.out.println("Thanks for using.");
         }
@@ -69,8 +74,8 @@ public class Main {
         }
     }
 
-    public static void exception(String base, String value) throws Exception {
-        throw new Exception(value + " cannot be written in " + base + " base.");
+    public static void exception(String base, String value) throws NumberFormatException {
+        throw new NumberFormatException(value + " cannot be written in " + base + " base.");
     }
 
     public static void exit() {
