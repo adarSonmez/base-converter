@@ -8,7 +8,7 @@ public class Main {
         try {
             value = JOptionPane.showInputDialog(null,
                     "Please enter the number, you want to convert to other number bases. \n" +
-                            "Negative numbers and decimals are not allowed!",
+                            "Decimals are not allowed!",
                     "Number",
                     JOptionPane.QUESTION_MESSAGE);
 
@@ -31,8 +31,10 @@ public class Main {
         } catch (NullPointerException ex) {
             System.out.println("You didn't enter a valid input");
         } finally {
-            System.out.println("Thanks for using.");
+            System.out.println("Thanks for using."); // always shown
         }
+
+        System.out.print("This message will not be shown if an exception occurs");
     }
 
     public static void isValidInput(String value, String base) {
